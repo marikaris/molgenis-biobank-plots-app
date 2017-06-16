@@ -36,8 +36,7 @@
         labels = labels.map(function (label) {
           return parseInt(label)
         })
-        // TODO: add x labels somehow
-        const xAxis = d3.axisBottom().scale(x).tickFormat(d3.timeYears(1998, 2010))
+        const xAxis = d3.axisBottom().scale(x).ticks(d3.timeYear)
 
         svg.append('g')
           .attr('class', 'xaxis')   // give it a class so it can be used to select only xaxis labels  below
@@ -94,7 +93,7 @@
           .append('svg')
           .attr('width', width + 60)
           .attr('height', height + 60)
-        const x = d3.scaleLinear().range([0, width])
+        const x = d3.scaleTime().domain([new Date(xlabels[0], -0.5, 1), new Date(xlabels[xlabels.length - 1], -0.5, 1)]).range([0, width])
         const y = d3.scaleLinear().range([height, 0])
         this.drawXAxis(x, height, xlabels, svg)
         this.addXLabel(width, height, this.xLabel, svg)
