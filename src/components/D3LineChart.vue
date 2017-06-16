@@ -6,24 +6,39 @@
         <div id="chart"></div>
       </b-card>
     </div>
-    <div class="col-md-2">{{hoverContent}}</div>
+    <div class="col-md-2">
+      <selected-dot-information :yLabel="yLabel" :xLabel="xLabel" :xPos="xPos" :yPos="yPos"></selected-dot-information>
+    </div>
   </div>
 </template>
 
 <script>
   import * as d3 from 'd3'
   import _ from 'lodash'
+  import SelectedDotInformation from './SelectedDotInformation'
 
   export default {
     name: 'd3-line-chart',
     props: ['data', 'height', 'width', 'title', 'xLabel', 'yLabel'],
+    components: {SelectedDotInformation},
+    data: function () {
+      return {
+        selected: 'Selected: ',
+        xPos: '',
+        yPos: ''
+      }
+    },
     computed: {
       hoverContent: {
         get: function () {
-          return 'something'
+          return this.selected
         },
         set: function (content) {
-          this.hoverContent = content
+          this.xPos = content.split(',')[0]
+          this.yPos = content.split(',')[1]
+          if (this.selected !== content) {
+            this.selected = 'Selected:<br/>' + content
+          }
         }
       }
     },
@@ -31,11 +46,22 @@
       this.renderChart()
     },
     methods: {
+      selectDot ($this) {
+        d3.selectAll('circle').attr('style', 'fill:black')
+        d3.select($this).attr('style', 'fill:red')
+      },
+      hoverDot ($this, myInstance) {
+        const hoverDot = d3.select($this)
+        const xPos = myInstance.data.xLabels[hoverDot.attr('xIndex')]
+        const yPos = hoverDot.attr('yVal')
+        myInstance.hoverContent = xPos + ',' + yPos
+      },
       drawXAxis (x, height, labels, svg) {
         // http://bl.ocks.org/phoebebright/3061203
         labels = labels.map(function (label) {
           return parseInt(label)
         })
+        // TODO: make configurable, year/number
         const xAxis = d3.axisBottom().scale(x).ticks(d3.timeYear)
 
         svg.append('g')
@@ -46,7 +72,7 @@
       drawYAxis (y, height, labels, svg) {
         // http://bl.ocks.org/phoebebright/3061203
         // TODO: add y labels somehow
-        const yAxis = d3.axisLeft().scale(y).tickValues(labels)
+        const yAxis = d3.axisLeft(y).scale(y)
         svg.append('g').attr('transform', 'translate(50,10)').attr('height', height + 20).call(yAxis)
       },
       addXLabel (width, height, label, svg) {
@@ -75,10 +101,11 @@
         svg.append('g').attr('transform', 'translate(50, 10)').append('path').attr('d', createPath(data)).attr('class', 'line')
         // add the scatterplot dots
         svg.selectAll('dot').data(data).enter().append('circle').attr('r', 3.5).attr('cx', (d, i) => x(i))
-          .attr('cy', d => y(d)).attr('transform', 'translate(50, 10)').attr('xIndex', (d, i) => i).attr('yVal', (d, i) => d).attr('class', 'dot').on('mouseover',
-          function () {
-            // myInstance.hoverContent = 'test'
-            console.log('hover')
+          .attr('cy', d => y(d)).attr('transform', 'translate(50, 10)').attr('xIndex', (d, i) => i).attr('yVal', (d, i) => d).attr('class', 'dot')
+          .on('mouseover', function () {
+            myInstance.hoverDot(this, myInstance)
+          }).on('click', function () {
+            myInstance.selectDot(this)
           })
       },
       renderChart () {
@@ -86,6 +113,7 @@
           return data[0]
         })
         const xlabels = this.data.xLabels
+        // TODO: make generic for bigger datasets
         const ylabels = _.range(Math.max(data))
         const height = this.height
         const width = this.width
@@ -94,7 +122,7 @@
           .attr('width', width + 60)
           .attr('height', height + 60)
         const x = d3.scaleTime().domain([new Date(xlabels[0], -0.5, 1), new Date(xlabels[xlabels.length - 1], -0.5, 1)]).range([0, width])
-        const y = d3.scaleLinear().range([height, 0])
+        const y = d3.scaleLinear().domain([ylabels[0], ylabels[ylabels.length - 1]]).nice().range([height, 0])
         this.drawXAxis(x, height, xlabels, svg)
         this.addXLabel(width, height, this.xLabel, svg)
         this.drawYAxis(y, height, ylabels, svg)
@@ -121,5 +149,9 @@
     fill: none;
     stroke: steelblue;
     stroke-width: 3px;
+  }
+
+  .selected {
+    color: red;
   }
 </style>
