@@ -46,9 +46,21 @@
       this.renderChart()
     },
     methods: {
-      selectDot ($this) {
+      mouseEnterDot ($this) {
         d3.selectAll('circle').attr('style', 'fill:black')
         d3.select($this).attr('style', 'fill:red')
+      },
+      mouseLeaveDot ($this) {
+        const dot = d3.select($this)
+        if (!dot.attr('clicked')) {
+          dot.attr('style', 'fill:black')
+        }
+      },
+      selectDot ($this) {
+        d3.selectAll('circle').attr('style', 'fill:black')
+        const dot = d3.select($this)
+        dot.attr('style', 'fill:red')
+        dot.attr('clicked', true)
       },
       hoverDot ($this, myInstance) {
         const hoverDot = d3.select($this)
@@ -106,6 +118,10 @@
             myInstance.hoverDot(this, myInstance)
           }).on('click', function () {
             myInstance.selectDot(this)
+          }).on('mouseenter', function () {
+            myInstance.mouseEnterDot(this)
+          }).on('mouseleave', function () {
+            myInstance.mouseLeaveDot(this)
           })
       },
       renderChart () {
