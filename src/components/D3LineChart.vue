@@ -14,7 +14,6 @@
 
 <script>
   import * as d3 from 'd3'
-  import _ from 'lodash'
   import SelectedDotInformation from './SelectedDotInformation'
 
   export default {
@@ -81,10 +80,15 @@
           .call(xAxis)
           .attr('transform', 'translate(50,' + (height + 10) + ')')
       },
-      drawYAxis (y, height, labels, svg) {
+      drawYAxis (y, height, max, svg) {
         // http://bl.ocks.org/phoebebright/3061203
         // TODO: add y labels somehow
+        var formatNumber = d3.format('.1f')
         const yAxis = d3.axisLeft(y).scale(y)
+          .tickFormat(function (d) {
+            var s = formatNumber(parseInt(max) * d)
+            return s
+          })
         svg.append('g').attr('transform', 'translate(50,10)').attr('height', height + 20).call(yAxis)
       },
       addXLabel (width, height, label, svg) {
@@ -128,9 +132,10 @@
         const data = this.data.matrix.map(function (data) {
           return data[0]
         })
+        const max = Math.max.apply(Math, data)
         const xlabels = this.data.xLabels
         // TODO: make generic for bigger datasets
-        const ylabels = _.range(Math.max(data))
+        console.log(Math.max(data))
         const height = this.height
         const width = this.width
         const svg = d3.select('#chart')
@@ -138,10 +143,10 @@
           .attr('width', width + 60)
           .attr('height', height + 60)
         const x = d3.scaleTime().domain([new Date(xlabels[0], -0.5, 1), new Date(xlabels[xlabels.length - 1], -0.5, 1)]).range([0, width])
-        const y = d3.scaleLinear().domain([ylabels[0], ylabels[ylabels.length - 1]]).nice().range([height, 0])
+        const y = d3.scaleLinear(y).range([height, 0])
         this.drawXAxis(x, height, xlabels, svg)
         this.addXLabel(width, height, this.xLabel, svg)
-        this.drawYAxis(y, height, ylabels, svg)
+        this.drawYAxis(y, height, max, svg)
         this.addYLabel(height, this.yLabel, svg)
         this.plotData(data, x, y, svg, this)
         svg.attr('width', width + 60)
@@ -165,9 +170,5 @@
     fill: none;
     stroke: steelblue;
     stroke-width: 3px;
-  }
-
-  .selected {
-    color: red;
   }
 </style>

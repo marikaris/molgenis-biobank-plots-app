@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'development') {
       samples: 'leiden_RP'
     },
     apiUrl: 'https://localhost:8080/api',
-    token: 'b399e27d10f642c19c22c36d15d5792b'
+    token: '1b24938f21dd4c02a97322a00235d309'
   }
 } else if (process.env.NODE_ENV === 'production') {
   console.log('Production')

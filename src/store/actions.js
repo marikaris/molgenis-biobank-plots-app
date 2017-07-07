@@ -99,8 +99,7 @@ export default {
             title: 'Smoking data',
             columns: [
               {type: 'number', label: 'Available', key: 'T'},
-              {type: 'number', label: 'Not available', key: 'F'},
-              {type: 'number', label: 'Unknown', key: 'null'}
+              {type: 'number', label: 'Not available', key: 'F'}
             ],
             rows: [
               {label: 'Smoking data', ...matrixValues(responses[0].aggs)}
