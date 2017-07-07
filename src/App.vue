@@ -6,6 +6,9 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
+          <d3-chromo-chart :height="chromoChart.height" :figureWidth="chromoChart.figureWidth"
+                           :patientIds="chromoChart.patientIds" :chr_size="chromoChart.chr_size"
+                           :mutations="chromoChart.mutations"></d3-chromo-chart>
           <d3-line-chart :data="lineChart.data" :width="lineChart.width" :height="lineChart.height"
                          :title="lineChart.title" :xLabel="lineChart.xLabel" :yLabel="lineChart.yLabel"></d3-line-chart>
         </div>
@@ -16,10 +19,13 @@
 
 <script>
   import D3LineChart from './components/D3LineChart'
+  import D3ChromoChart from './components/D3ChromoChart'
+
   export default {
     name: 'app',
     components: {
-      D3LineChart
+      D3LineChart,
+      D3ChromoChart
     },
     data () {
       return {
@@ -174,6 +180,30 @@
           title: 'UFO sightings per year',
           xLabel: 'Year',
           yLabel: 'Sightings'
+        },
+        chromoChart: {
+          mutations: {
+            hoi: [
+              {
+                'start': 2000000,
+                'stop': 3000000,
+                'type': 'del'
+              }
+            ],
+            doei: [{
+              'start': 20330000,
+              'stop': 30330000,
+              'type': 'del'
+            }, {
+              'start': 56000000,
+              'stop': 66000000,
+              'type': 'del'
+            }]
+          },
+          height: 20,
+          figureWidth: 800,
+          patientIds: ['hoi', 'doei'],
+          chr_size: 170805979
         }
       }
     }
