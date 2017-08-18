@@ -203,7 +203,8 @@
           height: 20,
           figureWidth: 800,
           patientIds: ['hoi', 'doei'],
-          chr_size: 170805979
+          title: 'Chromosome 6',
+          chr_size: 171115067
         }
       }
     }

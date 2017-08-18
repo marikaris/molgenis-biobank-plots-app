@@ -2,6 +2,8 @@
   <div class="row">
     <div class="col-md-10">
       <b-card>
+        <!--Somehow title is undefined <h6>{{title}}</h6>-->
+        <h6>Chromosome 6</h6>
         <div id="bars"></div>
       </b-card>
     </div>
@@ -59,7 +61,7 @@
         chr6_centromere: 61000000
       }
     },
-    props: ['mutations', 'figureWidth', 'chr_size', 'height', 'patientIds'],
+    props: ['mutations', 'figureWidth', 'chr_size', 'height', 'patientIds', 'title'],
     mounted () {
       this.renderChart()
     },
@@ -127,7 +129,6 @@
           } else if (i === self.chr6.length - 1) {
             self.drawChromText(chr, fontsize, band[2], id, 10, self.figureWidth)
           } else if (band[0] === center || band[1] === center) {
-            console.log('center')
           } else if (i % 2 === 0) {
             if (i % 4 === 0) {
               self.drawChromBand(chr, size, 'even', id, 7, start, fontsize, band[2], band[0], band[1])
@@ -166,16 +167,17 @@
       },
       renderChart () {
         const self = this
+        console.log(self.title)
         self.makeChromosome('chromosome6', 1, self.chr6_centromere)
-        self.patientIds.map(function (patientId, i) {
-          d3.select('#bars').append('div').attr('id', 'patient_container_' + patientId)
-          let patientContainer = d3.select('#patient_container_' + patientId)
-          patientContainer.append('div').attr('class', patientId).append('svg')
-            .attr('class', 'chart').attr('id', 'patient' + patientId)
-          let chart = d3.select('#patient' + patientId).attr('width', self.figureWidth).attr('height', self.height)
-          let bar = self.makeBar(chart, patientId, i + 2)
-          self.addMutations(bar, self.mutations[patientId], patientId)
-        })
+//        self.patientIds.map(function (patientId, i) {
+//          d3.select('#bars').append('div').attr('id', 'patient_container_' + patientId)
+//          let patientContainer = d3.select('#patient_container_' + patientId)
+//          patientContainer.append('div').attr('class', patientId).append('svg')
+//            .attr('class', 'chart').attr('id', 'patient' + patientId)
+//          let chart = d3.select('#patient' + patientId).attr('width', self.figureWidth).attr('height', self.height)
+//          let bar = self.makeBar(chart, patientId, i + 2)
+//          self.addMutations(bar, self.mutations[patientId], patientId)
+//        })
       }
     }
   }
@@ -223,9 +225,5 @@
 
   .chr_container {
     border-radius: 15px;
-  }
-
-  g text {
-    /*visibility: hidden;*/
   }
 </style>

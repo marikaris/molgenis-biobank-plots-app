@@ -135,7 +135,7 @@
         const max = Math.max.apply(Math, data)
         const xlabels = this.data.xLabels
         // TODO: make generic for bigger datasets
-        console.log(Math.max(data))
+//        console.log(Math.max(data))
         const height = this.height
         const width = this.width
         const svg = d3.select('#chart')
@@ -157,9 +157,6 @@
 </script>
 
 <style>
-  .d3-header {
-    color: black;
-  }
 
   svg {
     /*background-color: rgba(255, 111, 152, 0.24);*/
