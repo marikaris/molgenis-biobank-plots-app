@@ -4,7 +4,8 @@ import type { State } from '../flow.types'
 const state: State = {
   aggs: [],
   biobanks: [],
-  filters: []
+  filters: [],
+  refOptions: {}
 }
 
 export default state

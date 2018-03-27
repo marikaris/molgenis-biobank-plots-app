@@ -6,7 +6,7 @@
     <div class="card-body">
       <p v-for="attribute in filters">
         <span v-if="attribute.fieldType === 'CATEGORICAL'">
-          <categorical-filter :label="attribute.label" :id="attribute.name" :optionsRef="attribute.refEntity.href"></categorical-filter>
+          <categorical-filter :label="attribute.label" :id="attribute.name" :optionsUri="attribute.refEntity.href"></categorical-filter>
         </span>
         <span v-else>{{attribute.name}}</span>
       </p>

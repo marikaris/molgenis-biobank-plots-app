@@ -9,25 +9,23 @@
   </div>
 </template>
 <script>
-  import api from '@molgenis/molgenis-api-client'
+  import {GET_REF_DATA} from '../store/actions'
 
   export default {
     name: 'boolean-filter',
     props: [
       'label',
       'id',
-      'optionsRef'
+      'optionsUri'
     ],
     computed: {
       refOptions () {
-        return api.get(this.optionsRef).then(response => {
-          const options = response.items.map(option => {
-            return option.id
-          })
-          console.log(options)
-          return options
-        })
+        return this.$store.state.refOptions[this.id]
       }
+    },
+    watch () {},
+    mounted () {
+      this.$store.dispatch(GET_REF_DATA, [this.optionsUri, this.id])
     }
   }
 </script>
