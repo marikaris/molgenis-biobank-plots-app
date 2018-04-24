@@ -55,29 +55,29 @@ module.exports = {
     // https://vue-loader.vuejs.org/en/options.html#cachebusting
     cacheBusting: true,
 
-    cssSourceMap: true,
+    cssSourceMap: true
 
-    before (app) {
-      app.get('/api/v2/leiden_RP', function (request, response) {
-        if (request.query.aggs) {
-          const attr = request.query.aggs.split('==')[1]
-          if (attr === 'biobank') response.json(biobankAggregateResponse)
-          if (attr === 'sex') response.json(sexAggregateResponse)
-          if (attr === 'smoking') response.json(smokingAggregateResponse)
-          if (attr === 'age_years') response.json(ageYearsAggregateResponse)
-          if (attr === 'wbcc') response.json(wbccAggregateResponse)
-          if (attr === 'genotypes') response.json(genotypesAggregateResponse)
-          if (attr === 'metabolome') response.json(metabolomeAggregateResponse)
-          if (attr === 'methylome') response.json(methylomeAggregateResponse)
-          if (attr === 'transcriptome') response.json(transcriptomeAggregateResponse)
-          if (attr === 'wgs') response.json(wgsAggregateResponse)
-        } else if (request.query.q) {
-          response.json(filteredSampleResponse)
-        } else {
-          response.json(sampleResponse)
-        }
-      })
-    }
+    // before (app) {
+    //   app.get('/api/v2/leiden_RP', function (request, response) {
+    //     if (request.query.aggs) {
+    //       const attr = request.query.aggs.split('==')[1]
+    //       if (attr === 'biobank') response.json(biobankAggregateResponse)
+    //       if (attr === 'sex') response.json(sexAggregateResponse)
+    //       if (attr === 'smoking') response.json(smokingAggregateResponse)
+    //       if (attr === 'age_years') response.json(ageYearsAggregateResponse)
+    //       if (attr === 'wbcc') response.json(wbccAggregateResponse)
+    //       if (attr === 'genotypes') response.json(genotypesAggregateResponse)
+    //       if (attr === 'metabolome') response.json(metabolomeAggregateResponse)
+    //       if (attr === 'methylome') response.json(methylomeAggregateResponse)
+    //       if (attr === 'transcriptome') response.json(transcriptomeAggregateResponse)
+    //       if (attr === 'wgs') response.json(wgsAggregateResponse)
+    //     } else if (request.query.q) {
+    //       response.json(filteredSampleResponse)
+    //     } else {
+    //       response.json(sampleResponse)
+    //     }
+    //   })
+    // }
   },
 
   build: {
@@ -88,9 +88,9 @@ module.exports = {
     assetsRoot:
       path.resolve(__dirname, '../dist'),
     assetsSubDirectory:
-      'static',
+      '',
     assetsPublicPath:
-      '/',
+      '',
 
     /**
      * Source Maps

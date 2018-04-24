@@ -1,11 +1,13 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-6">
+      <div class="col-4">
         <h4>Filters</h4>
       </div>
-
-      <div class="col-6">
+      <div class="col-4">
+        <tour></tour>
+      </div>
+      <div class="col-4">
         <button
           id="reset-filter-btn"
           class="btn btn-sm btn-primary float-right"
@@ -15,9 +17,7 @@
         </button>
       </div>
     </div>
-
     <hr>
-
     <div class="row">
       <div class="col-12">
         <div v-for="filter in filters" :key="filter.id">
@@ -31,6 +31,7 @@
 
 <script>
   import FilterComponent from './filters/FilterComponent'
+  import Tour from '../components/tour/BiobankPlotsTour'
 
   const {backgroundColor, primaryColor} = window.__INITIAL_STATE__ || {}
 
@@ -53,6 +54,7 @@
       }
     },
     components: {
+      Tour,
       FilterComponent
     }
   }
